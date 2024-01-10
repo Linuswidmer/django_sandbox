@@ -1,0 +1,12 @@
+{% if latest_question_list %}
+    <ul>
+    {% for question in latest_question_list %}
+        <li>
+			<a href="{% url 'lunch_time:detail' question.id %}">{{ question.question_text }}</a>
+				<span class="timestamp">{{ question.pub_date|date:"F j, Y H:i" }}</span>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}

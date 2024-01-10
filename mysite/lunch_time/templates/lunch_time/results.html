@@ -1,0 +1,18 @@
+<h1>{{ question.question_text }}</h1>
+
+<ul>
+    {% for choice in question.choice_set.all %}
+        <li>
+            {{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}
+            {% if choice.vote_set.exists %}
+                <ul>
+                    {% for vote in choice.vote_set.all %}
+                        <li>{{ vote.name_text }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'lunch_time:detail' question.id %}">Vote again?</a>
