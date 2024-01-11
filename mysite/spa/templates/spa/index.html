@@ -1,0 +1,71 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Landing Page</title>
+    <!-- Add any additional styles or scripts here -->
+</head>
+<body>
+    <div id="landing-page">
+        <h1>Welcome to the Game!</h1>
+        <label for="playerName">Enter your name:</label>
+        <input type="text" id="playerName" required>
+        <button onclick="startGame()">Start Game</button>
+    </div>
+
+    <div id="matchmaking-page" style="display: none;">
+        <h1>Matchmaking...</h1>
+		<div id="matchmaking-info">
+		</div>
+    </div>
+
+<!-- '{% url "start_game" %}' -->
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    // Your existing JavaScript code for starting the game
+    function startGame() {
+        const playerNameInput = document.getElementById('playerName');
+    	const playerName = playerNameInput.value.trim();
+		if (!playerName) {
+			alert("Please enter a name");
+			return;
+		}
+
+        // Your AJAX request to the server
+        $.ajax({
+            type: "POST",
+            url: '{% url "start_game" %}',
+            data: { playerName: playerName },
+            success: function (data) {
+                if (data.status === "success") {
+                    // Update matchmaking information on success
+                    updateMatchmakingInfo(data);
+                } else {
+                    // Handle error case
+                    console.error("Error starting the game:", data.status);
+                }
+            },
+            error: function () {
+                // Handle AJAX error
+                console.error("Error making AJAX request");
+            }
+        });
+		document.getElementById('landing-page').style.display = 'none';
+        document.getElementById('matchmaking-page').style.display = 'block';
+    }
+
+    // Function to update matchmaking information on the page
+    function updateMatchmakingInfo(data) {
+        // Update the content of the "matchmaking-info" element
+        $("#matchmaking-info").html(
+            "Name: " + data.name +
+            "<br>Wins: " + data.wins +
+            "<br>Losses: " + data.losses
+        );
+    }
+</script>
+</body>
+</html>

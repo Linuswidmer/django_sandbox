@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+	'spa.apps.SpaConfig',
 	'lunch_time.apps.LunchTimeConfig',
 	'polls.apps.PollsConfig',
     'django.contrib.admin',
