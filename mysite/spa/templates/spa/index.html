@@ -25,6 +25,38 @@
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
+    const socket = new WebSocket('ws://' + window.location.host + '/ws/match/');
+
+    socket.onopen = function (event) {
+        // Send the player's name to the server
+        const playerNameInput = document.getElementById('playerName');
+    	const playerName = playerNameInput.value.trim();
+        const message = { 'player_name': playerName };
+        socket.send(JSON.stringify(message));
+    };
+
+    socket.onmessage = function (event) {
+        // Handle messages received from the server
+        const message = JSON.parse(event.data);
+        
+        if (message.matched) {
+
+            // Redirect to the game page or perform other actions
+            console.log('match found')
+        }
+    };
+
+    // Handle WebSocket closure
+    socket.onclose = function (event) {
+        console.error('WebSocket closed:', event);
+    };
+
+    // Handle WebSocket errors
+    socket.onerror = function (event) {
+        console.error('WebSocket error:', event);
+    };
+
+
     // Your existing JavaScript code for starting the game
     function startGame() {
         const playerNameInput = document.getElementById('playerName');
